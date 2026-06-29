@@ -1,7 +1,9 @@
+import 'package:injectable/injectable.dart';
 import 'package:warehouse_app/core/network/dio_client.dart';
 import 'package:warehouse_app/core/storage/token_storage.dart';
 import 'package:warehouse_app/features/auth/data/models/auth_response.dart';
 
+@lazySingleton
 class AuthRepository {
   final DioClient _dioClient;
   final TokenStorage _tokenStorage;

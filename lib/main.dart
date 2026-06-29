@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:warehouse_app/core/di/injection.dart';
 import 'package:warehouse_app/core/network/dio_client.dart';
 import 'package:warehouse_app/core/storage/token_storage.dart';
 import 'package:warehouse_app/features/auth/bloc/auth_bloc.dart';
@@ -7,16 +8,16 @@ import 'package:warehouse_app/features/auth/data/auth_repository.dart';
 import 'package:warehouse_app/features/auth/ui/login_screen.dart';
 
 void main() {
-  final tokenStorage = TokenStorage();
-  final dioClient = DioClient(tokenStorage);
-  final authRepository = AuthRepository(dioClient, tokenStorage);
+  configureDependecies();
+  // final tokenStorage = TokenStorage();
+  // final dioClient = DioClient(tokenStorage);
+  // final authRepository = AuthRepository(dioClient, tokenStorage);
 
-  runApp(MyApp(authRepository: authRepository));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final AuthRepository authRepository;
-  const MyApp({super.key, required this.authRepository});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Warehouse',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       home: BlocProvider(
-        create: (_) => AuthBloc(authRepository),
+        create: (_) => getIt<AuthBloc>(),
         child: const LoginScreen(),
       ),
     );
