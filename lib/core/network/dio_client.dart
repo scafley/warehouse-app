@@ -1,0 +1,28 @@
+import 'package:dio/dio.dart';
+import 'package:warehouse_app/core/storage/token_storage.dart';
+
+class DioClient {
+  final Dio dio;
+  final TokenStorage _tokenStorage;
+
+  DioClient(this._tokenStorage)
+    : dio = Dio(
+        BaseOptions(
+          baseUrl: 'http://localhost:5145/api',
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+        ),
+      ) {
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final token = await _tokenStorage.getToken();
+          if (token != null) {
+            options.headers['Authorization'] = 'Bearer $token';
+          }
+          handler.next(options);
+        },
+      ),
+    );
+  }
+}
