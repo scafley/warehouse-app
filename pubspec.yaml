@@ -38,6 +38,11 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_secure_storage: ^10.3.1
   bloc: ^9.2.1
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.12.0
+  get_it: ^9.2.1
+  injectable: ^3.0.0
+  meta: ^1.18.0
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +54,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  build_runner: ^2.15.0
+  freezed: ^4.0.0-dev.3
+  json_serializable: ^6.14.0
+  injectable_generator: ^3.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

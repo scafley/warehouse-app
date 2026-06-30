@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:warehouse_app/core/storage/token_storage.dart';
 
+@lazySingleton
 class DioClient {
   final Dio dio;
   final TokenStorage _tokenStorage;
