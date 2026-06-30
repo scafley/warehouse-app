@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:warehouse_app/core/auth/auth_notifier.dart';
+import 'package:warehouse_app/core/di/injection.dart';
+import 'package:warehouse_app/core/storage/token_storage.dart';
 import 'package:warehouse_app/features/warehouses/bloc/warehouses_bloc.dart';
 
 class WarehousesScreen extends StatelessWidget {
@@ -8,7 +12,15 @@ class WarehousesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Moje magazyny")),
+      appBar: AppBar(
+        title: const Text("Moje magazyny"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => _logout(context),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showCreateDialog(context),
         child: Icon(Icons.add),
@@ -32,6 +44,14 @@ class WarehousesScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    await getIt<TokenStorage>().deleteToken();
+    getIt<AuthNotifier>().logout();
+    if (context.mounted) {
+      context.go("/login");
+    }
   }
 
   void _showCreateDialog(BuildContext context) {
