@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:warehouse_app/core/di/injection.dart';
-import 'package:warehouse_app/core/network/dio_client.dart';
-import 'package:warehouse_app/core/storage/token_storage.dart';
 import 'package:warehouse_app/features/auth/bloc/auth_bloc.dart';
-import 'package:warehouse_app/features/auth/data/auth_repository.dart';
 import 'package:warehouse_app/features/auth/ui/login_screen.dart';
+import 'package:warehouse_app/features/warehouses/bloc/warehouses_bloc.dart';
+import 'package:warehouse_app/features/warehouses/ui/warehouses_screen.dart';
 
 void main() {
   configureDependecies();
@@ -26,8 +25,9 @@ class MyApp extends StatelessWidget {
       title: 'Warehouse',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       home: BlocProvider(
-        create: (_) => getIt<AuthBloc>(),
-        child: const LoginScreen(),
+        create: (_) =>
+            getIt<WarehousesBloc>()..add(WarehousesEvent.loadWarehouses()),
+        child: const WarehousesScreen(),
       ),
     );
   }
