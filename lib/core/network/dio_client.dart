@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:warehouse_app/core/auth/auth_notifier.dart';
 import 'package:warehouse_app/core/storage/token_storage.dart';
 
 @lazySingleton
 class DioClient {
   final Dio dio;
   final TokenStorage _tokenStorage;
+  final AuthNotifier _authNotifier;
 
-  DioClient(this._tokenStorage)
+  DioClient(this._tokenStorage, this._authNotifier)
     : dio = Dio(
         BaseOptions(
           baseUrl: 'http://localhost:5145/api',
@@ -23,6 +25,13 @@ class DioClient {
             options.headers['Authorization'] = 'Bearer $token';
           }
           handler.next(options);
+        },
+        onError: (error, handler) async {
+          if (error.response?.statusCode == 401) {
+            await _tokenStorage.deleteToken();
+            _authNotifier.logout();
+          }
+          handler.next(error);
         },
       ),
     );

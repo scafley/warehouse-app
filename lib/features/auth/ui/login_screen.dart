@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:warehouse_app/core/auth/auth_notifier.dart';
+import 'package:warehouse_app/core/di/injection.dart';
 import 'package:warehouse_app/features/auth/bloc/auth_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,9 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ).showSnackBar(SnackBar(content: Text(state.msg)));
           }
           if (state is AuthSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Zalogowano jako: ${state.name}")),
-            );
+            context.go('/warehouses');
           }
         },
         builder: (context, state) {
